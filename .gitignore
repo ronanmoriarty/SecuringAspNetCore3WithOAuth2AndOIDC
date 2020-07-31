@@ -11,3 +11,8 @@
 /Finished sample/src/Marvin.IDP/obj
 /Finished sample/src/ImageGallery.Model
 /Finished sample/src/ImageGallery.Client/obj
+
+**/[Bb]in/
+**/[Oo]bj/
+**/.idea
+**/.vs
