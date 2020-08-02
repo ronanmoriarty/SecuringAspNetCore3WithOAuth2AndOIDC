@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -52,7 +53,10 @@ namespace ImageGallery.Client
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.AccessDeniedPath = "/Authorization/AccessDenied";
+                })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                     {
                         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
