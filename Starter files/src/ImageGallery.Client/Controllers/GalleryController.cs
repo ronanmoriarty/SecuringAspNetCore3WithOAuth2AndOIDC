@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -198,6 +199,31 @@ namespace ImageGallery.Client.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> OrderFrame()
+        {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+            var discoveryDocumentResponse = await idpClient.GetDiscoveryDocumentAsync();
+            if (discoveryDocumentResponse.IsError)
+            {
+                throw new Exception("Problem accessing the discovery endpoint", discoveryDocumentResponse.Exception);
+            }
+
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            var userInfoResponse = await idpClient.GetUserInfoAsync(new UserInfoRequest
+            {
+                Address = discoveryDocumentResponse.UserInfoEndpoint,
+                Token = accessToken
+            });
+
+            if (userInfoResponse.IsError)
+            {
+                throw new Exception("Problem accessing the userinfo endpoint", userInfoResponse.Exception);
+            }
+
+            var address = userInfoResponse.Claims.SingleOrDefault(claim => claim.Type == "address")?.Value;
+            return View(new OrderFrameViewModel(address));
         }
     }
 }
