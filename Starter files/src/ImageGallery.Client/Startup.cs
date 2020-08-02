@@ -8,6 +8,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 
@@ -49,10 +50,7 @@ namespace ImageGallery.Client
                         options.Authority = "https://localhost:5001/";
                         options.ClientId = "imagegalleryclient";
                         options.ResponseType = "code";
-                        // options.CallbackPath = new PathString("...");
-                        options.Scope.Add("openid");
-                        options.Scope.Add("profile");
-                        //options.ClaimActions.Remove("nbf");
+                        options.Scope.Add("address");
                         options.ClaimActions.DeleteClaim("sid");
                         options.ClaimActions.DeleteClaim("idp");
                         options.ClaimActions.DeleteClaim("s_hash");
