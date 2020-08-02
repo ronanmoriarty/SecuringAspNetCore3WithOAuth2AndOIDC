@@ -6,8 +6,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Options;
 
 namespace ImageGallery.Client
 {
@@ -50,6 +52,11 @@ namespace ImageGallery.Client
                         // options.CallbackPath = new PathString("...");
                         options.Scope.Add("openid");
                         options.Scope.Add("profile");
+                        //options.ClaimActions.Remove("nbf");
+                        options.ClaimActions.DeleteClaim("sid");
+                        options.ClaimActions.DeleteClaim("idp");
+                        options.ClaimActions.DeleteClaim("s_hash");
+                        options.ClaimActions.DeleteClaim("auth_time");
                         options.SaveTokens = true;
                         options.ClientSecret = "secret";
                         options.GetClaimsFromUserInfoEndpoint = true;
