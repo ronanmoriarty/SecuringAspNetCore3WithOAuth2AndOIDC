@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace ImageGallery.Client.Controllers
 { 
+    [Authorize]
     public class GalleryController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
