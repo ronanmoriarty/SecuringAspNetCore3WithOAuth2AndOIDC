@@ -46,6 +46,7 @@ namespace My.IDP
                         IdentityServerConstants.StandardScopes.Address,
                         "roles"
                     },
+                    RequireConsent = true,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
